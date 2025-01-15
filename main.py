@@ -20,22 +20,79 @@
 # print(petya.get_info())
 
 
+#
+# class Animal:
+#     animal_counter = 0
+#
+#     def __init__(self, animal_type, name):
+#         self.animal_type = animal_type
+#         self.name = name
+#         Animal.animal_counter += 1
+#
+#     def show_info(self):
+#         print(f"{self.animal_type}; {self.name}")
+#
+# print(Animal.animal_counter)
+# barsik = Animal("Cat", "Barsik")
+# sharik = Animal("Dog", "Sharik")
+# barsik.show_info()
+# print(Animal.animal_counter)
+# print(barsik.animal_counter)
+# print(sharik.animal_counter)
 
-class Animal:
-    animal_counter = 0
+class Car:
+    car_counter = 0
 
-    def __init__(self, animal_type, name):
-        self.animal_type = animal_type
-        self.name = name
-        Animal.animal_counter += 1
+    def __init__(self, brand, model, price):
+        self.brand = brand
+        self.model = model
+        self.price = price
+        Car.car_counter += 1
 
-    def show_info(self):
-        print(f"{self.animal_type}; {self.name}")
+    def get_info(self):
+        return f"{self.brand} {self.model}. Price: {self.price}"
 
-print(Animal.animal_counter)
-barsik = Animal("Cat", "Barsik")
-sharik = Animal("Dog", "Sharik")
-barsik.show_info()
-print(Animal.animal_counter)
-print(barsik.animal_counter)
-print(sharik.animal_counter)
+    def get_car_counter(self):
+        return Car.car_counter
+
+
+m3 = Car("BMW", "M3", 3_000_000)
+print(m3.get_info())
+print(m3.get_car_counter())
+f40 = Car("Ferrari", "F-40", 30_000_000)
+print(f40.get_car_counter())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
