@@ -18,6 +18,7 @@
 # petya.say_hello()
 # print(vasya.get_info())
 # print(petya.get_info())
+from calendar import firstweekday
 
 
 #
@@ -162,5 +163,133 @@
 # german.say_hello()
 
 
+# class Weather:
+#
+#
+#     @staticmethod
+#     def celsius_to_fahrenheit(t):
+#         return t * 9 / 5 + 32
+#
+#     @staticmethod
+#     def celsius_to_kelvins(t):
+#         return t + 273.15
+#
+#     @staticmethod
+#     def fahrenheit_to_celsius(t):
+#         return (t - 32) * 5/9
+#
+#     @staticmethod
+#     def fahrenheit_to_kelvins(t):
+#         return (t - 32) * 5/9 + 273.15
+#
+#     @staticmethod
+#     def kelvins_to_celsius(t):
+#         return t - 273.15
+#
+#     @staticmethod
+#     def kelvins_to_fahrenheit(t):
+#         return (t - 273.15) * 9/5 + 32
 
 
+import math
+
+class Fraction:
+    def __init__(self, numerator, denominator):
+        self.a = numerator
+        self.b = denominator
+        self.reduction()
+
+    def __str__(self):
+        return f"{self.a}/{self.b}"
+
+    def summ(self, other):
+        return Fraction(self.a * other.b + self.b * other.a, self.b * other.b)
+
+    def subtraction(self, other):
+        return Fraction(self.a * other.b - self.b * other.a, self.b * other.b)
+
+    def multiplication(self, other):
+        return Fraction(self.a * other.a, self.b * other.b)
+
+    def division(self, other):
+        return Fraction(self.a * other.b, self.b * other.a)
+
+    def __add__(self, other):
+        return Fraction(self.a * other.b + self.b * other.a, self.b * other.b)
+
+    def __sub__(self, other):
+        return Fraction(self.a * other.b - self.b * other.a, self.b * other.b)
+
+    def __mul__(self, other):
+        return Fraction(self.a * other.a, self.b * other.b)
+
+    def __truediv__(self, other):
+        return Fraction(self.a * other.b, self.b * other.a)
+
+    def __iadd__(self, other):
+        self.a = self.a * other.b + self.b * other.a
+        self.b = self.b * other.b
+        return self
+
+    def __isub__(self, other):
+        self.a = self.a * other.b - self.b * other.a
+        self.b = self.b * other.b
+        return self
+
+    def __imul__(self, other):
+        self.a = self.a * other.a
+        self.b = self.b * other.b
+        return self
+
+    def __itruediv__(self, other):
+        self.a, self.b = self.a * other.b, self.b * other.a
+        return self
+
+
+    def __gt__(self, other):
+        return self.a * other.b > self.b * other.a
+
+
+    def __lt__(self, other):
+        return self.a * other.b < self.b * other.a
+
+    def __eq__(self, other):
+        return self.a * other.b == self.b * other.a
+
+    def __ne__(self, other):
+        return self.a * other.b != self.b * other.a
+
+    def __ge__(self, other):
+        return self.a * other.b >= self.b * other.a
+
+    def __le__(self, other):
+        return self.a * other.b <= self.b * other.a
+
+    def reduction(self):
+        common_divider = math.gcd(self.a, self.b)
+        self.a = self.a // common_divider
+        self.b = self.b // common_divider
+
+
+
+
+
+
+
+first = Fraction(2, 5)
+print(first)
+second = Fraction(2, 3)
+print(first.summ(second))
+print(first.division(second))
+print(first.multiplication(second))
+print(first + second)
+print(first - second)
+print(first / second)
+first += second
+print(first)
+print(first > second)
+
+print(math.gcd(8, 10))
+print(math.gcd(100, 200))
+
+print(Fraction(50, 100) * (Fraction(2, 2)))
