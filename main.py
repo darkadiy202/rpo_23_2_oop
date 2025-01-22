@@ -318,60 +318,267 @@ from calendar import firstweekday
 
 
 
-from abc import ABC, abstractmethod
+# from abc import ABC, abstractmethod
+#
+#
+# class Figure2D(ABC):
+#
+#     @abstractmethod
+#     def area(self):
+#         pass
+#
+#     @abstractmethod
+#     def perimeter(self):
+#         pass
+#
+#
+# class Square(Figure2D):
+#     def __init__(self, size):
+#         self.size = size
+#
+#     def area(self):
+#         return self.size ** 2
+#
+#     def perimeter(self):
+#         return self.size * 4
+#
+#
+# class Rectangle(Figure2D):
+#     def __init__(self, width, height):
+#         self.width = width
+#         self.height = height
+#
+#     def area(self):
+#         return self.width * self.height
+#
+#     def perimeter(self):
+#         return (self.width + self.height) * 2
 
 
-class Figure2D(ABC):
-
-    @abstractmethod
-    def area(self):
-        pass
-
-    @abstractmethod
-    def perimeter(self):
-        pass
-
-
-class Square(Figure2D):
-    def __init__(self, size):
-        self.size = size
-
-    def area(self):
-        return self.size ** 2
-
-    def perimeter(self):
-        return self.size * 4
-
-
-class Rectangle(Figure2D):
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-
-    def area(self):
-        return self.width * self.height
-
-    def perimeter(self):
-        return (self.width + self.height) * 2
-
-
-
-
+# class Human:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+#
+#     def say_hi(self):
+#         print(f"Hi! My name is {self.name}")
+#
+#
+# class Builder(Human):
+#     def __init__(self, name, age, specialization):
+#         super().__init__(name, age)
+#         self.specialization = specialization
+#
+#     def build_roof(self):
+#         print(f"{self.name} building a roof!")
+#
+#
+# class Sailor(Human):
+#     def __init__(self, name, age, ship):
+#         super().__init__(name, age)
+#         self.ship = ship
+#
+#     def drink_rome(self):
+#         print(f"{self.name} drinking holy water!")
+#
+#
+# class Pilot(Human):
+#     def __init__(self, name, age, airplane):
+#         super().__init__(name, age)
+#         self.airplane = airplane
+#
+#     def flying(self):
+#         print(f"{self.name} flying on {self.airplane}!")
 
 
+# class Animal:
+#     def __init__(self, name, age, weight, height):
+#         self.name = name
+#         self.age = age
+#         self.weight = weight
+#         self.height = height
+#
+#     def say(self):
+#         pass
+#
+#     def eat(self):
+#         pass
+#
+#
+# class Tiger(Animal):
+#     def say(self):
+#         print("МЯУ")
+#
+#     def eat(self):
+#         print("ТИГР КУШОЕТ")
+#
+# class Crocodile(Animal):
+#     def say(self):
+#         print("Иди сюда чебурашка")
+#
+#     def eat(self):
+#         print("КРОКОДАЙЛ КУШОЕТ")
+#
+# class Kangaroo(Animal):
+#     def say(self):
+#         print("ГАВ ГАВ")
+#
+#     def eat(self):
+#         print("КЕНГУРУ КУШОЕТ")
+#
+#
+# sherhan = Tiger("Шер хан", 20, 450, 150)
+# Tiger.eat(sherhan)
+# Tiger.say(sherhan)
+
+# class Money:
+#     def __init__(self, valuta: str, left: int, right: int):
+#         self.valuta = valuta
+#         self.a = left
+#         self.b = right
+#
+#     def __str__(self):
+#         if self.b < 10:
+#             return f"{self.a}.0{self.b} {self.valuta}"
+#         return f"{self.a}.{self.b} {self.valuta}"
+#
+#     def set_left(self, value):
+#         self.a = value
+#
+#     def set_right(self, value):
+#         self.b = value
+#
+#     def __add__(self, other):
+#         if self.valuta != other.valuta:
+#             raise ValueError("Dont summ different valuta")
+#         else:
+#             new_b = self.b + other.b
+#             if new_b > 99:
+#                 return Money(self.valuta, self.a + other.a + 1, new_b - 100)
+#             return Money(self.valuta, self.a + other.a, new_b)
+#
+#     def __sub__(self, other):
+#         if self.valuta != other.valuta:
+#             raise ValueError("Dont summ different valuta")
+#         else:
+#             new_b = self.b - other.b
+#             if new_b < 0:
+#                 return Money(self.valuta, self.a - other.a - 1, new_b + 100)
+#             return Money(self.valuta, self.a - other.a, new_b)
+#
+#
+# vasyas_pocket = Money("USD", 35, 20)
+# print(vasyas_pocket)
+# petyas_pocket = Money("USD", 100, 80)
+# print(vasyas_pocket + petyas_pocket)
+# print(vasyas_pocket - petyas_pocket)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# import pygame
+#
+#
+# class Shape:
+#     def __init__(self, x, y):
+#         self.x = x
+#         self.y = y
+#
+#     def show(self):
+#         pass
+#
+#     def save(self):
+#         pass
+#
+#     def load(self):
+#         pass
+#
+# class Square(Shape):
+#     def __init__(self, x: int, y: int, size: int, color: tuple[int, int, int]):
+#         super().__init__(x, y)
+#         self.size = size
+#         self.color = color
+#
+#     def show(self):
+#         pygame.draw.rect(
+#             screen,
+#             self.color,
+#             (self.x, self.y, self.size, self.size)
+#         )
+#         pygame.display.update()
+#
+#     def save(self):
+#         pass
+#
+#     def load(self):
+#         pass
+#
+#
+# class Rectangle(Shape):
+#     def __init__(self, x: int, y: int, width: int, height: int, color: tuple[int, int, int]):
+#         super().__init__(x, y)
+#         self.width = width
+#         self.height = height
+#         self.color = color
+#
+#     def show(self):
+#         pygame.draw.rect(
+#             screen,
+#             self.color,
+#             (self.x, self.y, self.width, self.height)
+#         )
+#         pygame.display.update()
+#
+#     def save(self):
+#         pass
+#
+#     def load(self):
+#         pass
+#
+# class Circle(Shape):
+#     def __init__(self, x: int, y: int, radius: int, color: tuple[int, int, int]):
+#         super().__init__(x, y)
+#         self.radius = radius
+#         self.color = color
+#
+#     def show(self):
+#         pygame.draw.circle(
+#             screen,
+#             self.color,
+#             (self.x, self.y),
+#             self.radius
+#         )
+#         pygame.display.update()
+#
+#     def save(self):
+#         pass
+#
+#     def load(self):
+#         pass
+#
+#
+# pygame.init()
+# screen = pygame.display.set_mode((1000, 1000))
+#
+#
+# sponge_bob = Square(50, 50, 100,(255, 255, 0))
+#
+# sponge_bob_father = Square(350, 350, 200, (255, 200, 0))
+#
+# brick = Rectangle(500, 500, 200, 100, (255, 0, 0))
+#
+# kolobok = Circle(600, 800, 100, (200, 200, 0))
+# kolobok_change_y = 5
+# while True:
+#     pygame.time.Clock().tick(10)
+#     screen.fill((0, 0, 0))
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             pygame.quit()
+#
+#     kolobok.y += kolobok_change_y
+#     if kolobok.y > 800 or kolobok.y < 0:
+#         kolobok_change_y *= -1
+#
+#     kolobok.show()
+#     brick.show()
+#     sponge_bob_father.show()
+#     sponge_bob.show()
