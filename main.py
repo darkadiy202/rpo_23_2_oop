@@ -475,7 +475,7 @@ from calendar import firstweekday
 
 
 # import pygame
-#
+# import pickle
 #
 # class Shape:
 #     def __init__(self, x, y):
@@ -506,10 +506,12 @@ from calendar import firstweekday
 #         pygame.display.update()
 #
 #     def save(self):
-#         pass
+#         with open("some_square.pkl", "wb") as file:
+#             pickle.dump(self, file)
 #
 #     def load(self):
-#         pass
+#         with open("some_square.pkl", "rb") as file:
+#             self = pickle.load(file)
 #
 #
 # class Rectangle(Shape):
@@ -582,3 +584,181 @@ from calendar import firstweekday
 #     brick.show()
 #     sponge_bob_father.show()
 #     sponge_bob.show()
+
+
+# import pickle
+#
+#
+# class Book:
+#     def __init__(self, title: str, author: str, year: int, genre: str, quantity: int):
+#         self.title = title
+#         self.author = author
+#         self.year = year
+#         self.genre = genre
+#         self.quantity = quantity
+#
+#     def __str__(self):
+#         return f"{self.title}; {self.author}; {self.year}; {self.genre}; кол-во: {self.quantity}"
+#
+#
+# class Reader:
+#     current_reader_id = 1
+#
+#     def __init__(self, full_name: str):
+#         self.full_name = full_name
+#         self.book_list = []
+#         self.reader_id = Reader.current_reader_id
+#         Reader.current_reader_id += 1
+#
+#     def __str__(self):
+#         return f"{self.full_name}. id = {self.reader_id}"
+#
+#     def add_book(self, book):
+#         if isinstance(book, Book) is False:
+#             raise TypeError("Can add only class Book objects")
+#         self.book_list.append(book)
+#
+#     def remove_book(self, book):
+#         if isinstance(book, Book) is False:
+#             raise TypeError("Can add only class Book objects")
+#         self.book_list.remove(book)
+#
+#
+# class Library:
+#     def __init__(self, name: str, address: str):
+#         self.name = name
+#         self.address = address
+#         self.all_books = []
+#         self.all_readers = []
+#
+#     def __str__(self):
+#         return f"{self.name}; {self.address}"
+#
+#     def show_all_books(self):
+#         for book in self.all_books:
+#             print(book)
+#
+#     def show_all_readers(self):
+#         for reader in self.all_readers:
+#             print(reader)
+#
+#     def add_book(self, book):
+#         if isinstance(book, Book) is False:
+#             raise TypeError("Can add only class Book objects")
+#         self.all_books.append(book)
+#
+#     def create_book(self):
+#         title = input("Название книги: ")
+#         author = input("Автор книги: ")
+#         year = int(input("Год издания книги: "))
+#         genre = input("Жанр книги: ")
+#         quantity = int(input("Общее кол-во книг в библиотеке: "))
+#         self.all_books.append(Book(title, author, year, genre, quantity))
+#
+#     def add_reader(self, reader):
+#         if isinstance(reader, Reader) is False:
+#             raise TypeError("Can add only class Book objects")
+#         self.all_readers.append(reader)
+#
+#     def create_reader(self):
+#         new_name = input("Имя читателя: ")
+#         self.all_readers.append(Reader(new_name))
+#
+#     def book_issue(self, reader, book):
+#         if isinstance(reader, Reader) is False or isinstance(book, Book) is False:
+#             raise TypeError("Incorrect types of arguments / need Reader and Book")
+#         if book.quantity <= 0:
+#             print("Данные книги закончились")
+#         else:
+#             reader.add_book(book)
+#             book.quantity -= 1
+#
+#     def book_return(self, reader, book):
+#         if isinstance(reader, Reader) is False or isinstance(book, Book) is False:
+#             raise TypeError("Incorrect types of arguments / need Reader and Book")
+#         try:
+#             reader.remove_book(book)
+#             book.quantity += 1
+#         except:
+#             print("Такой книги у читателя нет!")
+#
+#     def save_library_data(self):
+#         with open("library_data.pkl", "wb") as file:
+#             pickle.dump(self, file)
+#
+#     def load_library_data(self):
+#         with open("library_data.pkl", "rb") as file:
+#             self = pickle.load(file)
+#
+#
+# war_and_peace = Book("Война и мир", "Толстой Лев Николаевич", 1864, "роман", 5)
+# dead_souls = Book("Мёртвые души", "Гоголь Николай Васильевич", 1842, "роман", 2)
+#
+# vasya = Reader("Вася")
+# musk = Reader("Илон Маск")
+#
+# top_college_library = Library("Библиотека top колледжа", "Куйбышева, д. 11")
+#
+# top_college_library.add_book(war_and_peace)
+# top_college_library.add_book(dead_souls)
+#
+# top_college_library.show_all_books()
+
+
+from abc import ABC, abstractmethod
+from importlib.metadata import pass_none
+from signal import pthread_sigmask
+
+
+class Projectile(ABC):
+    def __init__(self, x, y, angle, speed, damage):
+        self.x = x
+        self.y = y
+        self.angle = angle
+        self.speed = speed
+        self.damage = damage
+
+    @abstractmethod
+    def flying(self):
+        pass
+
+    @abstractmethod
+    def hit(self, other_object):
+        pass
+
+class Arrow(Projectile):
+    def flying(self):
+        print(f"Стрела полетела из координат x:{self.x};y:{self.y} в направлении {self.angle}")
+
+    def hit(self, other_object):
+        print(f"Стрела попала в объект {other_object}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
