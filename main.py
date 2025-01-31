@@ -18,7 +18,12 @@
 # petya.say_hello()
 # print(vasya.get_info())
 # print(petya.get_info())
+import sys
+import time
 from calendar import firstweekday
+
+import pygame
+from pygame.examples.go_over_there import screen
 
 
 #
@@ -705,36 +710,186 @@ from calendar import firstweekday
 # top_college_library.show_all_books()
 
 
-from abc import ABC, abstractmethod
-from importlib.metadata import pass_none
-from signal import pthread_sigmask
+# from abc import ABC, abstractmethod
+# from importlib.metadata import pass_none
+# from signal import pthread_sigmask
+#
+#
+# class Projectile(ABC):
+#     def __init__(self, x, y, angle, speed, damage):
+#         self.x = x
+#         self.y = y
+#         self.angle = angle
+#         self.speed = speed
+#         self.damage = damage
+#
+#     @abstractmethod
+#     def flying(self):
+#         pass
+#
+#     @abstractmethod
+#     def hit(self, other_object):
+#         pass
+#
+# class Arrow(Projectile):
+#     def flying(self):
+#         print(f"Стрела полетела из координат x:{self.x};y:{self.y} в направлении {self.angle}")
+#
+#     def hit(self, other_object):
+#         print(f"Стрела попала в объект {other_object}")
+
+import pygame
+import sys
+import random
 
 
-class Projectile(ABC):
-    def __init__(self, x, y, angle, speed, damage):
-        self.x = x
-        self.y = y
-        self.angle = angle
-        self.speed = speed
-        self.damage = damage
+class Board:
+    def __init__(self, width, height, screen):
+        self.width = width
+        self.height = height
+        self.board = [[0 for i in range(width)] for j in range(height)]
+        self.white = (255, 255, 255)
+        self.black = (0, 0, 0)
+        self.cell_size = self.height * 10
+        self.screen = screen
 
-    @abstractmethod
-    def flying(self):
+    def render(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                pygame.draw.rect(
+                    self.screen,
+                    self.white,
+                    (self.cell_size * x, self.cell_size * y, self.cell_size, self.cell_size),
+                    1
+                )
+        pygame.display.update()
+
+
+class Minesweeper(Board):
+    def __init__(self, width, height, screen, bomb_counter):
+        super().__init__(width, height, screen)
+        self.bomb_counter = bomb_counter
+        self.game_field = [[-1 for i in range(self.width)] for j in range(self.height)]
+        self.red = (255, 0, 0)
+        self.generate_bomb_positions()
+        self.neighbours_cells = (
+            (0, -1),
+            (1, -1),
+            (1, 0),
+            (1, 1),
+            (0, 1),
+            (-1, 1),
+            (-1, 0),
+            (-1, -1)
+        )
+        self.text_font = pygame.font.SysFont("Arial", 60)
+
+    def render(self):
+        for y in range(self.height):
+            for x in range(self.width):
+                # if self.game_field[y][x] == 10:     # если в таких координатах бомба
+                #     # отрисовка бомбы (ПОТОМ УДАЛИТЬ!!!!)
+                #     pygame.draw.rect(
+                #         self.screen,
+                #         self.red,
+                #         (self.cell_size * x, self.cell_size * y, self.cell_size, self.cell_size)
+                #     )
+                if 0 <= self.game_field[y][x] <= 8:
+                    bomb_counter_text = self.text_font.render(
+                        str(self.game_field[y][x]),
+                        1,
+                        self.white
+                    )
+                    self.screen.blit(bomb_counter_text, (x * self.cell_size, y * self.cell_size))
+                elif self.game_field[y][x] == 9:
+                    # отображение флажка
+                    flag_text = self.text_font.render(
+                        "?",
+                        1,
+                        self.white
+                    )
+                    self.screen.blit(flag_text, (x * self.cell_size, y * self.cell_size))
+                # отрисовка сетки
+                pygame.draw.rect(
+                    self.screen,
+                    self.white,
+                    (self.cell_size * x, self.cell_size * y, self.cell_size, self.cell_size),
+                    1
+                )
+        pygame.display.update()
+
+    def generate_bomb_positions(self):
+        x = 0
+        while x < self.bomb_counter:
+            bomb_x = random.randint(0, self.width - 1)
+            bomb_y = random.randint(0, self.height - 1)
+            if self.game_field[bomb_y][bomb_x] == -1:
+                self.game_field[bomb_y][bomb_x] = 10        # 10 это бомба
+                x += 1
+
+    def click(self, mouse_x, mouse_y, mouse_button):
+        x = mouse_x // self.cell_size
+        y = mouse_y // self.cell_size
+        if mouse_button == 1 and self.game_field[y][x] == -1:
+            self.open_cells(x, y)
+        elif mouse_button == 1 and self.game_field[y][x] == 10:
+            pygame.draw.rect(
+                self.screen,
+                self.red,
+                (self.cell_size * x, self.cell_size * y, self.cell_size, self.cell_size)
+            )
+            lose_font = pygame.font.SysFont("Arial", 200)
+            lose_text = lose_font.render("AHAHA! LOSER!", 1, (0, 255, 255))
+            self.screen.blit(lose_text, (100, 400))
+            pygame.display.update()
+            time.sleep(5)
+            pygame.quit()
+            sys.exit()
+        elif mouse_button == 3:
+            if self.game_field[y][x] == -1:
+                self.game_field[y][x] = 9
+            elif self.game_field[y][x] == 9:
+                self.game_field[y][x] = -1
+            pygame.display.update()
+
+
+    def open_cells(self, x, y):
+        bomb_counter = 0
+        for change_x, change_y in self.neighbours_cells:
+            neighbour_x = x + change_x
+            neighbour_y = y + change_y
+            if 0 <= neighbour_x < self.width and 0 <= neighbour_y < self.height:
+                if self.game_field[neighbour_y][neighbour_x] == 10:
+                    bomb_counter += 1
+        self.game_field[y][x] = bomb_counter
+
+        if self.game_field[y][x] == 0:
+            for change_x, change_y in self.neighbours_cells:
+                neighbour_x = x + change_x
+                neighbour_y = y + change_y
+                if 0 <= neighbour_x < self.width and 0 <= neighbour_y < self.height:
+                    if self.game_field[neighbour_y][neighbour_x] == -1:
+                        self.open_cells(neighbour_x, neighbour_y)
+
+
+    def check_win(self):
         pass
 
-    @abstractmethod
-    def hit(self, other_object):
-        pass
 
-class Arrow(Projectile):
-    def flying(self):
-        print(f"Стрела полетела из координат x:{self.x};y:{self.y} в направлении {self.angle}")
-
-    def hit(self, other_object):
-        print(f"Стрела попала в объект {other_object}")
-
-
-
+if __name__ == "__main__":
+    width = 15
+    height = 10
+    pygame.init()
+    screen = pygame.display.set_mode((width * 100, height * 100))
+    test_board = Minesweeper(width, height, screen, 20)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                test_board.click(event.pos[0], event.pos[1], event.button)
+        test_board.render()
 
 
 
