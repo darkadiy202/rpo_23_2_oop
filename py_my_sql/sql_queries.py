@@ -22,3 +22,43 @@ def create_database_and_tables(cursor):
     cursor.execute(query)
 
     print("База данных и таблицы успешно созданы!")
+
+
+def add_test_students(cursor, connections):
+    query = """INSERT INTO students
+                (first_name, last_name, city, country, birth_day, email, phone, group_name, avg_grade, worse_discipline, best_discipline)
+                VALUES
+                ("Vasya", "Vasin", "Sochi", "Russia", "2000-05-20", "vasya@mail.com", 89006783454, "rpo-23/1", 2.56, "math", "fizra"), 
+                ("Petya", "Petin", "Moscow", "Russia", "2008-05-20", "petya@mail.com", 89117683454, "rpo-23/2", 3.56, "fizra", "math"), 
+                ("Lionell", "Messi", "Buenos-Aires", "Argentina", "1990-05-20", "messi@mail.com", 89106873445, "rpo-23/2", 4.56, "fizra", "literature"), 
+                ("Cristiano", "Ronaldo", "Maderia", "Portugal", "1985-05-20", "cry@mail.com", 89016738444, "rpo-23/2", 4.56, "fizra", "biology"), 
+                ("Artyom", "Dzyba", "Moscow", "Russia", "1992-05-20", "dzy@mail.com", 89996783344, "rpo-23/2", 2.56, "operator", "fizra")
+    """
+    cursor.execute(query)
+    connections.commit()
+    print("Тестовые студенты успешно добавлены.")
+
+
+
+def get_full_info(cursor):
+    query = """SELECT * FROM students"""
+    cursor.execute(query)
+    for row in cursor:
+        print(*row, sep="; ")
+
+
+
+def get_student_names(cursor):
+    pass
+def get_student_average_grades(cursor):
+    pass
+def get_students_with_grade_more_than(cursor):
+    pass
+def get_student_countries(cursor):
+    pass
+def get_student_cities(cursor):
+    pass
+def get_student_groups(cursor):
+    pass
+def get_worse_students(cursor):
+    pass
