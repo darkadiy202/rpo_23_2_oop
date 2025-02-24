@@ -1,6 +1,7 @@
 import pymysql
 import sql_queries
 
+
 try:
     with (pymysql.connect(host="localhost", port=3306, user="root", password="") as connection):
         print("Connection successful")

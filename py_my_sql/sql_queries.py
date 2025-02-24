@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 def create_database_and_tables(cursor):
     query = """CREATE DATABASE IF NOT EXISTS students_db"""
     cursor.execute(query)
@@ -49,16 +52,59 @@ def get_full_info(cursor):
 
 
 def get_student_names(cursor):
-    pass
+    query = """SELECT first_name, last_name FROM students"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+
+
 def get_student_average_grades(cursor):
-    pass
+    query = """SELECT first_name, last_name, avg_grade FROM students"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+
+
 def get_students_with_grade_more_than(cursor):
-    pass
+    grade = int(input("Оценка: "))
+    query = f"""SELECT * FROM students WHERE avg_grade > {grade}"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+
+
 def get_student_countries(cursor):
-    pass
+    query = """SELECT DISTINCT country FROM students"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+
+
 def get_student_cities(cursor):
-    pass
+    query = """SELECT DISTINCT city FROM students"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+
+
 def get_student_groups(cursor):
-    pass
+    query = """SELECT DISTINCT group_name FROM students"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+
+
 def get_worse_students(cursor):
-    pass
+    query = """SELECT * FROM students
+             WHERE avg_grade = (SELECT MIN(avg_grade) FROM students)
+    """
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
