@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+
 def create_database_and_tables(cursor):
     cursor.execute("""CREATE DATABASE IF NOT EXISTS cars""")
     cursor.execute("""USE cars""")
@@ -32,16 +35,99 @@ def add_brand(cursor, connection):
 
 
 def add_model(cursor, connection):
-    pass
+    show_all_brands(cursor)
+    brand_id = int(input("Выберите id производителя: "))
+    model_name = input("Название модели: ")
+    year = int(input("Годы выпуска: "))
+    max_speed = int(input("Максимальная скорость: "))
+    price = int(input("Цена: "))
+    query = """INSERT INTO models
+                (model_name, year, price, max_speed, brand_id)
+                VALUES
+                (%s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (model_name, year, price, max_speed, brand_id))
+    connection.commit()
+    print(f"Модель {model_name} успешно добавлена.")
+
+
 def delete_model(cursor, connection):
-    pass
+    show_all_models(cursor)
+    model_id = int(input("Выберите id модели, которую надо удалить: "))
+    query = """DELETE FROM models
+                WHERE id = %s
+    """
+    cursor.execute(query, model_id)
+    connection.commit()
+    print("Машина успешно удалена.")
+
+
+
 def update_model(cursor, connection):
-    pass
+    show_all_models(cursor)
+    model_id = int(input("Выберите id модели, которую надо отредактировать: "))
+    model_name = input("Название модели: ")
+    year = int(input("Годы выпуска: "))
+    max_speed = int(input("Максимальная скорость: "))
+    price = int(input("Цена: "))
+    query = """UPDATE models
+                SET model_name = %s, year = %s, max_speed = %s, price = %s
+                WHERE id = %s
+    """
+    cursor.execute(query, (model_name, year, max_speed, price, model_id))
+    connection.commit()
+    print("Информация успешно обновлена.")
+
+
 def show_all_brands(cursor):
-    pass
+    query = """SELECT id, brand_name, country FROM brands"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    print("Все производители: ")
+    for row in data:
+        print(*row, sep="; ")
+    print("\n\n")
+
+
 def show_all_models(cursor):
-    pass
+    query = """SELECT m.id, b.brand_name, m.model_name, m.year, b.country, m.max_speed, m.price FROM models m
+                JOIN brands b
+                WHERE m.brand_id = b.id
+                ORDER BY (b.brand_name)
+    """
+    cursor.execute(query)
+    data = cursor.fetchall()
+    print("Все модели: ")
+    for row in data:
+        print(*row, sep="; ")
+    print("\n\n")
+
+
 def show_models_by_brand(cursor):
-    pass
+    show_all_brands(cursor)
+    brand_id = int(input("Выберите id производителя: "))
+    query = """SELECT model_name, year, max_speed, price FROM models
+                WHERE brand_id = %s
+                ORDER BY (model_name)
+    """
+    cursor.execute(query, brand_id)
+    data = cursor.fetchall()
+    print("Все модели данного производителя: ")
+    for row in data:
+        print(*row, sep="; ")
+    print("\n\n")
+
+
 def show_models_by_year(cursor):
-    pass
+    show_all_models(cursor)
+    year = int(input("Выберите год производителя: "))
+    query = """SELECT model_name, year, max_speed, price FROM models
+                WHERE year = %s
+                ORDER BY (model_name)
+    """
+    cursor.execute(query, year)
+    data = cursor.fetchall()
+    print("Все модели данного года: ")
+    for row in data:
+        print(*row, sep="; ")
+    print("\n\n")
