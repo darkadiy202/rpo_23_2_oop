@@ -131,3 +131,50 @@ def show_models_by_year(cursor):
     for row in data:
         print(*row, sep="; ")
     print("\n\n")
+
+
+def add_users_table(cursor):
+    query = """CREATE TABLE IF NOT EXISTS users (
+               id INT AUTO_INCREMENT PRIMARY KEY,
+               first_name VARCHAR(50) NOT NULL,
+               last_name VARCHAR(50) NOT NULL, 
+               phone VARCHAR(15) NOT NULL UNIQUE
+    )"""
+    cursor.execute(query)
+
+    query = """CREATE TABLE IF NOT EXISTS users_and_cars (
+               user_id INT,
+               car_id INT,
+               PRIMARY KEY (user_id, car_id),
+               FOREIGN KEY (user_id) REFERENCES users(id),
+               FOREIGN KEY (car_id) REFERENCES models(id)
+    )"""
+    cursor.execute(query)
+
+    print("Таблица про пользователей успешно создана.")
+
+
+def add_user(cursor, connection):
+    first_name = input("Имя: ")
+    last_name = input("Фамилия: ")
+    phone = input("Телефон: ")
+    query = """INSERT INTO users
+                (first_name, last_name, phone)
+                VALUES
+                (%s, %s, %s)
+    """
+    cursor.execute(query, (first_name, last_name, phone))
+    connection.commit()
+    print(f"Пользователь {first_name} {last_name} успешно добавлен")
+
+def show_users_list(cursor):
+    pass
+
+def add_car_to_user(cursor, connection):
+    pass
+
+def show_cars_by_user(cursor):
+    pass
+
+def show_users_by_car(cursor):
+    pass
