@@ -1,6 +1,5 @@
 from re import match
 
-
 import pymysql
 import sql_queries1
 

@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+
+
 
 
 def create_database_and_tables(cursor):
@@ -168,13 +169,52 @@ def add_user(cursor, connection):
     print(f"Пользователь {first_name} {last_name} успешно добавлен")
 
 def show_users_list(cursor):
-    pass
+    query = """SELECT * FROM users"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+    print("\n\n")
 
 def add_car_to_user(cursor, connection):
-    pass
+    show_users_list(cursor)
+    user_id = int(input("Кому добавить машину(введите id): "))
+    show_all_models(cursor)
+    car_id = int(input("Какую машину выдать(введите id): "))
+    query = """INSERT INTO users_and_cars
+                (user_id, car_id)
+                VALUES
+                (%s, %s)
+    """
+    cursor.execute(query, (user_id, car_id))
+    connection.commit()
+    print("Успешно добавили машину пользователю.")
 
 def show_cars_by_user(cursor):
-    pass
+    show_users_list(cursor)
+    user_id = int(input("Какой владелец интересует(введите id): "))
+    query = """SELECT b.brand_name, m.model_name, b.country, m.year, m.price, m.max_speed FROM users_and_cars u_a_c
+                JOIN users u
+                JOIN models m
+                JOIN brands b
+                WHERE u_a_c.user_id = u.id AND u_a_c.car_id = m.id AND m.brand_id = b.id AND u.id = %s
+    """
+    cursor.execute(query, user_id)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+    print("Успешно добавили!\n\n")
+
 
 def show_users_by_car(cursor):
-    pass
+    show_all_models(cursor)
+    model_id = int(input("Выберите машину(введите id): "))
+    query = """SELECT u.id, first_name, last_name, phone FROM users_and_cars u_a_c
+                JOIN users u
+                WHERE u_a_c.user_id = u.id AND u_a_c.car_id = %s
+    """
+    cursor.execute(query, model_id)
+    data = cursor.fetchall()
+    for row in data:
+        print(*row, sep="; ")
+    print("\n\n")
